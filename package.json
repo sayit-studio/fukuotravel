@@ -1,0 +1,18 @@
+{
+  "name": "fukuotravel",
+  "version": "1.0.0",
+  "description": "福岡旅遊行程管理 App — Notion API 整合",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev":   "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "dotenv":     "^16.4.5",
+    "express":    "^4.19.2",
+    "node-fetch": "^2.7.0"
+  }
+}

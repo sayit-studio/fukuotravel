@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="color-scheme" content="light">
+<title>🇯🇵 福岡旅遊筆記 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:       #FFFFFF;
+    --card:     #FFEBCC;
+    --blue-lt:  #BDDDF0;
+    --blue:     #8CC0EB;
+    --text:     #1A1A1A;
+    --text-mid: #555555;
+    --text-sub: #888888;
+    --border:   rgba(140,192,235,0.35);
+    --check-ok: #8CC0EB;
+    --tag-food:      #D96B4A;
+    --tag-sweet:     #C4729A;
+    --tag-sight:     #4A8C6E;
+    --tag-shop:      #5A87B8;
+    --tag-dept:      #B8924A;
+    --tag-transport: #7A6DB5;
+    --tag-airport:   #777;
+    --tag-note:      #999;
+    --shadow: 0 2px 12px rgba(140,192,235,0.18);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html { background: #FFFFFF; color-scheme: light; }
+
+  body {
+    font-family: 'Noto Sans TC', sans-serif;
+    background: #FFFFFF;
+    color: var(--text);
+    min-height: 100vh;
+    max-width: 480px;
+    margin: 0 auto;
+    font-size: 18px;
+  }
+
+  /* ── HEADER ── */
+  .app-header {
+    background: var(--blue);
+    padding: 18px 20px 14px;
+    position: sticky; top: 0; z-index: 100;
+    box-shadow: 0 2px 16px rgba(140,192,235,0.45);
+  }
+  .app-header h1 {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 24px; font-weight: 800;
+    color: var(--text); letter-spacing: 1.5px;
+  }
+  .app-header .subtitle {
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 13px; color: var(--text);
+    opacity: 0.65; margin-top: 3px; letter-spacing: 0.5px;
+  }
+
+  /* ── BOTTOM NAV ── */
+  .bottom-nav {
+    position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+    width: 100%; max-width: 480px;
+    background: var(--card);
+    display: flex; z-index: 200;
+    border-top: 2px solid var(--blue-lt);
+    box-shadow: 0 -2px 12px rgba(140,192,235,0.2);
+  }
+  .nav-btn {
+    flex: 1; padding: 10px 4px 8px;
+    display: flex; flex-direction: column; align-items: center; gap: 3px;
+    background: none; border: none; cursor: pointer;
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 12px; color: var(--text-sub);
+    transition: color 0.2s;
+  }
+  .nav-btn.active { color: var(--blue); font-weight: 700; }
+  .nav-btn .icon { font-size: 22px; line-height: 1; }
+
+  /* ── MAIN ── */
+  .main { padding: 16px 16px 100px; }
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* ── DAY TABS ── */
+  .day-tabs {
+    display: flex; gap: 8px;
+    overflow-x: auto; scrollbar-width: none;
+    margin-bottom: 16px; padding-bottom: 4px;
+  }
+  .day-tabs::-webkit-scrollbar { display: none; }
+  .day-tab {
+    flex-shrink: 0; padding: 8px 16px;
+    border-radius: 20px; font-size: 14px; font-weight: 700;
+    border: 2px solid var(--blue-lt);
+    background: none; color: var(--text-mid);
+    cursor: pointer; font-family: 'Noto Sans TC', sans-serif;
+    transition: all 0.2s; white-space: nowrap; line-height: 1.4; text-align: center;
+  }
+  .day-tab.active { background: var(--blue); color: var(--text); border-color: var(--blue); }
+
+  /* ── DAY HEADER ── */
+  .day-header {
+    background: var(--blue-lt);
+    border-radius: 16px; padding: 14px 18px; margin-bottom: 10px;
+    display: flex; justify-content: space-between; align-items: center;
+    border: 1.5px solid var(--blue);
+  }
+  .day-num {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 36px; font-weight: 800; color: var(--text); line-height: 1;
+  }
+  .day-info { text-align: right; }
+  .day-date { font-family: 'Shippori Mincho', serif; font-size: 17px; font-weight: 600; color: var(--text); }
+  .day-zone { font-size: 13px; color: var(--text-mid); margin-top: 3px; }
+  .day-progress { font-size: 13px; color: var(--blue); font-weight: 700; margin-top: 4px; }
+
+  /* ── EDIT MODE BAR ── */
+  .edit-bar {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 10px; gap: 8px;
+  }
+  .edit-toggle-btn {
+    display: flex; align-items: center; gap: 6px;
+    padding: 8px 16px; border-radius: 20px;
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 13px; font-weight: 700; cursor: pointer;
+    border: 2px solid var(--blue-lt);
+    background: none; color: var(--text-mid);
+    transition: all 0.2s;
+  }
+  .edit-toggle-btn.active {
+    background: var(--blue); color: var(--text); border-color: var(--blue);
+  }
+  .edit-hint {
+    font-size: 12px; color: var(--text-sub);
+    flex: 1; text-align: right;
+  }
+
+  /* ── ITEM CARD ── */
+  .item-list { list-style: none; }
+
+  .item-card {
+    background: var(--card);
+    border-radius: 14px;
+    margin: 0 4px 10px 4px;
+    border: 1.5px solid var(--border);
+    display: flex; gap: 10px; align-items: flex-start;
+    position: relative; overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: box-shadow 0.2s, opacity 0.2s;
+    touch-action: pan-y;
+    user-select: none;
+    padding: 13px 13px 13px 15px;
+  }
+  .item-card.edit-mode {
+    touch-action: none;
+    cursor: grab;
+  }
+  .item-card.dragging {
+    opacity: 0.5;
+    box-shadow: 0 8px 28px rgba(140,192,235,0.5);
+    cursor: grabbing;
+  }
+  .item-card::before {
+    content: '';
+    position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
+    background: var(--bar-color, var(--blue));
+    border-radius: 4px 0 0 4px;
+  }
+  .item-card.done { opacity: 0.42; }
+  .item-card.done .item-name { text-decoration: line-through; }
+
+  /* drag handle — only shown in edit mode */
+  .drag-handle {
+    font-size: 18px; color: var(--blue);
+    flex-shrink: 0; padding: 1px 0;
+    cursor: grab; line-height: 1.5;
+    display: none;
+    touch-action: none;
+  }
+  .edit-mode .drag-handle { display: block; }
+
+  .check-circle {
+    width: 24px; height: 24px; border-radius: 50%;
+    border: 2px solid var(--blue-lt); flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    margin-top: 1px; transition: all 0.2s;
+    background: transparent; cursor: pointer; font-size: 13px;
+  }
+  .item-card.done .check-circle {
+    background: var(--check-ok); border-color: var(--check-ok); color: white;
+  }
+
+  .item-body { flex: 1; min-width: 0; }
+  .item-top { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .item-name {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 16px; font-weight: 700; color: var(--text); line-height: 1.35;
+  }
+  .tag {
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 11px; font-weight: 700;
+    padding: 2px 8px; border-radius: 10px;
+    color: white; letter-spacing: 0.3px; white-space: nowrap;
+  }
+  .tag-food      { background: var(--tag-food); }
+  .tag-sweet     { background: var(--tag-sweet); }
+  .tag-sight     { background: var(--tag-sight); }
+  .tag-shop      { background: var(--tag-shop); }
+  .tag-dept      { background: var(--tag-dept); }
+  .tag-transport { background: var(--tag-transport); }
+  .tag-airport   { background: var(--tag-airport); }
+  .tag-note-tag  { background: var(--tag-note); }
+
+  .item-meta {
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 12px; color: var(--text-sub);
+    margin-top: 4px; display: flex; gap: 10px; flex-wrap: wrap;
+  }
+  .map-btn {
+    display: inline-flex; align-items: center; gap: 3px;
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 12px; color: var(--blue);
+    background: rgba(140,192,235,0.18);
+    border-radius: 8px; padding: 4px 10px;
+    text-decoration: none; font-weight: 700;
+    margin-top: 6px; border: none; cursor: pointer;
+  }
+  .item-note {
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 13px; color: var(--text-mid);
+    margin-top: 5px; padding: 6px 9px;
+    background: rgba(189,221,240,0.25);
+    border-radius: 8px; line-height: 1.6;
+  }
+  .delete-btn {
+    font-size: 15px; color: #ccc;
+    padding: 4px 2px; background: none; border: none;
+    cursor: pointer; flex-shrink: 0; line-height: 1;
+  }
+
+  /* ── ADD BUTTON ── */
+  .add-btn {
+    width: calc(100% - 8px); margin: 6px 4px 0;
+    padding: 14px; border-radius: 14px;
+    border: 2px dashed var(--blue-lt);
+    background: none; color: var(--text-mid);
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 15px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+    transition: all 0.2s;
+  }
+  .add-btn:active { background: rgba(140,192,235,0.12); }
+
+  /* ── SECTION LABEL ── */
+  .section-label {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 14px; font-weight: 700;
+    letter-spacing: 1.5px; color: var(--blue);
+    margin: 18px 0 10px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--blue-lt); }
+
+  /* ── MODAL ── */
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(26,26,26,0.5);
+    z-index: 300; display: none; align-items: flex-end; justify-content: center;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: #FFFFFF; border-radius: 24px 24px 0 0;
+    padding: 24px 20px 44px; width: 100%; max-width: 480px;
+    animation: slideUp 0.25s ease; border-top: 3px solid var(--blue);
+  }
+  @keyframes slideUp {
+    from { transform: translateY(60px); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+  }
+  .modal h3 {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 19px; font-weight: 700; margin-bottom: 16px; color: var(--text);
+  }
+  .modal input, .modal select, .modal textarea {
+    width: 100%; padding: 12px 14px; border-radius: 12px;
+    border: 1.5px solid var(--blue-lt);
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 16px; background: var(--card);
+    color: var(--text); margin-bottom: 10px; outline: none;
+  }
+  .modal input:focus, .modal select:focus, .modal textarea:focus { border-color: var(--blue); }
+  .modal textarea { height: 70px; resize: none; }
+  .modal-row { display: flex; gap: 8px; }
+  .modal-row > * { flex: 1; }
+  .modal-btns { display: flex; gap: 10px; margin-top: 6px; }
+  .btn-cancel {
+    flex: 1; padding: 13px; border-radius: 12px;
+    border: 1.5px solid var(--blue-lt); background: none;
+    font-family: 'Noto Sans TC', sans-serif; font-size: 16px;
+    cursor: pointer; color: var(--text-mid);
+  }
+  .btn-save {
+    flex: 2; padding: 13px; border-radius: 12px;
+    background: var(--blue); color: var(--text);
+    border: none; font-family: 'Shippori Mincho', serif;
+    font-size: 17px; font-weight: 700; cursor: pointer;
+  }
+
+  /* ── SHOP PAGE ── */
+  .overview-card {
+    background: var(--blue-lt); border-radius: 16px;
+    padding: 16px; margin-bottom: 16px; border: 1.5px solid var(--blue);
+  }
+  .overview-card h3 {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 15px; font-weight: 700; letter-spacing: 1px; color: var(--text); margin-bottom: 8px;
+  }
+  .progress-bar-wrap { background: rgba(140,192,235,0.3); border-radius: 8px; height: 7px; overflow: hidden; margin-top: 6px; }
+  .progress-bar { height: 100%; background: linear-gradient(90deg, var(--blue), #5AAEE0); border-radius: 8px; transition: width 0.4s ease; }
+  .progress-text { font-family: 'Noto Sans TC', sans-serif; font-size: 13px; color: var(--text-mid); margin-top: 4px; }
+
+  .shop-area-header { background: var(--blue); border-radius: 14px; padding: 13px 16px; margin-bottom: 10px; }
+  .area-name { font-family: 'Shippori Mincho', serif; font-size: 19px; font-weight: 700; color: var(--text); }
+  .area-desc { font-family: 'Noto Sans TC', sans-serif; font-size: 13px; color: var(--text); opacity: 0.65; margin-top: 3px; }
+  .shop-count { font-family: 'Noto Sans TC', sans-serif; font-size: 13px; color: var(--text); font-weight: 700; background: rgba(255,255,255,0.25); padding: 2px 8px; border-radius: 8px; white-space: nowrap; }
+
+  .shop-item {
+    background: var(--card); border-radius: 12px; padding: 13px 14px;
+    margin-bottom: 8px; border: 1.5px solid var(--border);
+    display: flex; align-items: center; gap: 12px;
+    cursor: pointer; box-shadow: var(--shadow);
+  }
+  .shop-item.done { opacity: 0.4; }
+  .shop-item.done .shop-name { text-decoration: line-through; }
+  .shop-check { width: 24px; height: 24px; border-radius: 6px; border: 2px solid var(--blue-lt); flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.2s; font-size: 13px; }
+  .shop-item.done .shop-check { background: var(--check-ok); border-color: var(--check-ok); color: white; }
+  .shop-body { flex: 1; }
+  .shop-name { font-family: 'Shippori Mincho', serif; font-size: 15px; font-weight: 600; color: var(--text); }
+  .shop-sub { font-family: 'Noto Sans TC', sans-serif; font-size: 13px; color: var(--text-sub); margin-top: 2px; }
+
+  /* ── TIPS PAGE ── */
+  .tip-card { background: var(--card); border-radius: 14px; padding: 14px 16px; margin-bottom: 10px; border-left: 4px solid var(--blue); box-shadow: var(--shadow); }
+  .tip-card.urgent { border-left-color: #D96B4A; }
+  .tip-card h4 { font-family: 'Shippori Mincho', serif; font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+  .tip-card.urgent h4 { color: #D96B4A; }
+  .tip-card p { font-family: 'Noto Sans TC', sans-serif; font-size: 14px; color: var(--text-mid); line-height: 1.8; }
+
+  .empty-state { text-align: center; padding: 30px; font-family: 'Noto Sans TC', sans-serif; color: var(--text-sub); font-size: 15px; }
+
+  .link-card { display: flex; align-items: center; gap: 10px; background: var(--card); border-radius: 12px; padding: 13px 14px; text-decoration: none; color: var(--text); border: 1.5px solid var(--border); margin-bottom: 8px; box-shadow: var(--shadow); }
+  .link-card-title { font-family: 'Shippori Mincho', serif; font-size: 16px; font-weight: 700; }
+  .link-card-sub { font-family: 'Noto Sans TC', sans-serif; font-size: 13px; color: var(--text-sub); margin-top: 2px; }
+
+  /* ── DRAG PLACEHOLDER ── */
+  .drag-placeholder { list-style: none; border-radius: 14px; margin: 0 4px 10px 4px; background: rgba(140,192,235,0.15); border: 2px dashed var(--blue-lt); }
+
+  /* ── LOADING STATE (addition) ── */
+  .loading-state {
+    text-align: center; padding: 40px 20px;
+    font-family: 'Noto Sans TC', sans-serif;
+    color: var(--text-sub); font-size: 15px;
+  }
+
+  /* ── SHOP DRAG SUPPORT (addition) ── */
+  .shop-list { list-style: none; }
+  .shop-item.edit-mode  { touch-action: none; cursor: grab; }
+  .shop-item.dragging   { opacity: 0.5; box-shadow: 0 8px 28px rgba(140,192,235,0.5); cursor: grabbing; }
+</style>
+</head>
+<body>
+
+<div class="app-header">
+  <h1>🗾 福岡旅遊筆記</h1>
+  <div class="subtitle">2026年5月25日－28日・4天3夜</div>
+</div>
+
+<div class="main">
+  <!-- ── 行程頁 ── -->
+  <div class="page active" id="page-itinerary">
+    <div class="day-tabs" id="dayTabs"></div>
+    <div id="dayContent"></div>
+  </div>
+
+  <!-- ── 購物頁 ── -->
+  <div class="page" id="page-shop">
+    <div class="overview-card">
+      <h3>📦 購物進度</h3>
+      <div id="shopProgress" class="progress-text">載入中...</div>
+      <div class="progress-bar-wrap"><div class="progress-bar" id="shopProgressBar" style="width:0%"></div></div>
+    </div>
+    <!-- 排序編輯列 -->
+    <div class="edit-bar" id="shopEditBar">
+      <button class="edit-toggle-btn" id="shopEditBtn" onclick="toggleShopEditMode()">✏️ 編輯排序</button>
+      <span id="shopEditHint" class="edit-hint" style="display:none">拖曳 ☰ 調整順序</span>
+    </div>
+    <div id="shopContent"></div>
+    <button class="add-btn" onclick="openShopModal()">＋ 新增購物項目</button>
+  </div>
+
+  <!-- ── 小提醒頁 ── -->
+  <div class="page" id="page-tips">
+    <div class="section-label">⚡ 重要提醒</div>
+    <div class="tip-card urgent"><h4>🎂 機場福砂屋蛋糕</h4><p>回程出境後免稅區 B1 領取，需要國泰小樹點兌換。登機前記得確認！</p></div>
+    <div class="tip-card urgent"><h4>🚃 交通規劃</h4><p>天神↔博多：地鐵空港線約6分鐘<br>天神↔太宰府：西鐵約30分鐘<br>博多↔lalaport：路線巴士約20分鐘 or 竹下駅步行13分</p></div>
+    <div class="tip-card"><h4>🍜 餐廳建議</h4><p>熱門餐廳建議提早去或避開尖峰<br>・一蘭、博多水炊人龍常見，準備等待<br>・屋台晚上才開，建議早點去卡位<br>・需預約請用 TableCheck 提前訂位</p></div>
+    <div class="tip-card"><h4>🏪 購物注意</h4><p>・UNIQLO/GU 感謝祭期間優惠多<br>・博多阪急：島本明太子醬只有 B1 才有<br>・天神Mina：UNIQLO、GU、LOFT、宜得利、JINS、ABC MART 同棟<br>・Donki：chpt9 地瓜奶油抹醬、pigeon 鼻塞藥<br>・lalaport 物販 10:00-21:00</p></div>
+    <div class="tip-card"><h4>💳 支付 & 網路</h4><p>多數小店可刷卡，建議備少量日幣現金<br>建議購買 eSIM 或確認網路方案<br>交通：地鐵＋西鐵最方便，善用 Google Maps</p></div>
+    <div class="tip-card"><h4>🔌 電器</h4><p>日本電壓 100V，插頭為 A 型（台灣同款）</p></div>
+    <div class="section-label">🌐 實用連結</div>
+    <a href="https://www.tablecheck.com/zh-TW" target="_blank" class="link-card"><span style="font-size:22px">📅</span><div><div class="link-card-title">TableCheck 訂位</div><div class="link-card-sub">餐廳預約平台</div></div></a>
+    <a href="https://www.nishitetsu.jp/zh-tw/" target="_blank" class="link-card"><span style="font-size:22px">🚃</span><div><div class="link-card-title">西鐵電車</div><div class="link-card-sub">天神→太宰府路線</div></div></a>
+    <a href="https://mitsui-shopping-park.com/lalaport/fukuoka/" target="_blank" class="link-card"><span style="font-size:22px">🏬</span><div><div class="link-card-title">lalaport 福岡</div><div class="link-card-sub">官網・賣場資訊</div></div></a>
+  </div>
+</div>
+
+<nav class="bottom-nav">
+  <button class="nav-btn active" onclick="switchPage('itinerary',this)"><span class="icon">📅</span>每日行程</button>
+  <button class="nav-btn" onclick="switchPage('shop',this)"><span class="icon">🛍️</span>購物清單</button>
+  <button class="nav-btn" onclick="switchPage('tips',this)"><span class="icon">💡</span>小提醒</button>
+</nav>
+
+<!-- ── 行程新增 Modal ── -->
+<div class="modal-overlay" id="addModal">
+  <div class="modal">
+    <h3>➕ 新增行程項目</h3>
+    <input type="text" id="newName" placeholder="名稱（例：一蘭拉麵）">
+    <div class="modal-row">
+      <select id="newCat">
+        <option value="food">🍜 美食</option>
+        <option value="sweet">🍡 甜食</option>
+        <option value="sight">⛩️ 景點</option>
+        <option value="shop">🛍️ 購物</option>
+        <option value="dept">🏬 百貨</option>
+        <option value="transport">🚃 交通</option>
+        <option value="airport">✈️ 機場</option>
+      </select>
+      <select id="newZone">
+        <option value="天神">天神</option>
+        <option value="博多">博多</option>
+        <option value="中洲">中洲</option>
+        <option value="太宰府">太宰府</option>
+        <option value="lalaport">lalaport</option>
+        <option value="機場">機場</option>
+        <option value="其他">其他</option>
+      </select>
+    </div>
+    <input type="text" id="newStation" placeholder="最近車站（選填）">
+    <input type="text" id="newHours" placeholder="營業時間（選填）">
+    <textarea id="newNote" placeholder="備註（選填）"></textarea>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal()">取消</button>
+      <button class="btn-save" id="saveItemBtn" onclick="saveItem()">新增 ✓</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── 購物新增 Modal ── -->
+<div class="modal-overlay" id="addShopModal">
+  <div class="modal">
+    <h3>🛍️ 新增購物項目</h3>
+    <input type="text" id="shopNewName" placeholder="品項名稱（例：島本明太子醬）">
+    <select id="shopNewArea">
+      <option value="博多阪急">🏬 博多阪急</option>
+      <option value="天神Mina">🏢 天神Mina</option>
+      <option value="lalaport">🛒 lalaport</option>
+      <option value="唐吉訶德">🦅 唐吉訶德</option>
+      <option value="天神地下街">🚇 天神地下街</option>
+      <option value="超市其他">🛍️ 超市其他</option>
+      <option value="機場免稅">✈️ 機場免稅</option>
+    </select>
+    <textarea id="shopNewSub" placeholder="備註（選填）"></textarea>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeShopModal()">取消</button>
+      <button class="btn-save" id="saveShopBtn" onclick="saveShopItem()">新增 ✓</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════════════════
+//  CONFIG
+// ═══════════════════════════════════════════════════════════════════════════════
+
+const API_BASE = window.location.hostname === 'localhost'
+  ? 'http://localhost:3000'
+  : window.location.origin;
+
+const CAT_CONFIG = {
+  food:      { label:'美食',  cls:'tag-food',      color:'#D96B4A', icon:'🍜' },
+  sweet:     { label:'甜食',  cls:'tag-sweet',     color:'#C4729A', icon:'🍡' },
+  sight:     { label:'景點',  cls:'tag-sight',     color:'#4A8C6E', icon:'⛩️' },
+  shop:      { label:'購物',  cls:'tag-shop',      color:'#5A87B8', icon:'🛍️' },
+  dept:      { label:'百貨',  cls:'tag-dept',      color:'#B8924A', icon:'🏬' },
+  transport: { label:'交通',  cls:'tag-transport', color:'#7A6DB5', icon:'🚃' },
+  airport:   { label:'機場',  cls:'tag-airport',   color:'#777',    icon:'✈️' },
+  note:      { label:'備註',  cls:'tag-note-tag',  color:'#999',    icon:'📌' },
+};
+
+const DAYS = [
+  { id:'D1', label:'D1', date:'5/25 (一)', zones:'天神・博多' },
+  { id:'D2', label:'D2', date:'5/26 (二)', zones:'天神・博多・中洲' },
+  { id:'D3', label:'D3', date:'5/27 (三)', zones:'太宰府・lalaport・天神' },
+  { id:'D4', label:'D4', date:'5/28 (四)', zones:'天神・機場' },
+];
+
+// 購物區域靜態設定（icon / desc / map）
+const AREA_META = {
+  '博多阪急':   { icon:'🏬', desc:'博多駅直結 B1-8F',           map:'https://maps.app.goo.gl/hakata-hankyu' },
+  '天神Mina':   { icon:'🏢', desc:'天神站直結',                  map:'https://maps.app.goo.gl/tenjinmina' },
+  'lalaport':   { icon:'🛒', desc:'竹下駅13分 / 博多駅直行巴士', map:'https://maps.app.goo.gl/lalaport' },
+  '唐吉訶德':   { icon:'🦅', desc:'中洲川端周邊・24H',            map:'https://maps.app.goo.gl/donki-fukuoka' },
+  '天神地下街': { icon:'🚇', desc:'天神站・地下步行街',            map:'https://maps.app.goo.gl/tenjingaichiku' },
+  '超市其他':   { icon:'🛍️', desc:'Aeon・各藥妝店',              map:'' },
+  '機場免稅':   { icon:'✈️', desc:'出境後 B1・回程必逛',          map:'https://maps.app.goo.gl/fuk-airport' },
+};
+const AREA_ORDER = ['博多阪急','天神Mina','lalaport','唐吉訶德','天神地下街','超市其他','機場免稅'];
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════════════════════════════════════
+
+let state = {
+  currentDay:   'D1',
+  editMode:     false,
+  shopEditMode: false,
+  items:        {},   // { D1: [...], D2: [...] }
+  shopItems:    null, // null = not loaded yet
+};
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  API HELPER
+// ═══════════════════════════════════════════════════════════════════════════════
+
+async function api(path, opts = {}) {
+  const res = await fetch(API_BASE + path, {
+    ...opts,
+    headers: { 'Content-Type': 'application/json', ...(opts.headers || {}) },
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({ error: res.statusText }));
+    throw new Error(err.error || `HTTP ${res.status}`);
+  }
+  return res.json();
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  ITINERARY — LOAD & RENDER
+// ═══════════════════════════════════════════════════════════════════════════════
+
+async function loadDay(dayId) {
+  document.getElementById('dayContent').innerHTML =
+    '<div class="loading-state">⏳ 載入行程中...</div>';
+  try {
+    const items = await api('/api/itinerary?day=' + dayId);
+    state.items[dayId] = items;
+    renderDayContent();
+  } catch (e) {
+    document.getElementById('dayContent').innerHTML =
+      `<div class="loading-state">⚠️ 載入失敗：${e.message}<br><br>
+       <button class="add-btn" onclick="loadDay('${dayId}')">重新載入</button></div>`;
+  }
+}
+
+function renderDayTabs() {
+  document.getElementById('dayTabs').innerHTML = DAYS.map(d => `
+    <button class="day-tab${state.currentDay===d.id?' active':''}" onclick="selectDay('${d.id}')">
+      ${d.label}<br><span style="font-size:11px;font-weight:400">${d.date.split(' ')[0]}</span>
+    </button>`).join('');
+}
+
+function renderDayContent() {
+  const day   = DAYS.find(d => d.id === state.currentDay);
+  const items = state.items[day.id] || [];
+  const done  = items.filter(i => i.done).length;
+  const em    = state.editMode;
+
+  document.getElementById('dayContent').innerHTML = `
+    <div class="day-header">
+      <div class="day-num">${day.label}</div>
+      <div class="day-info">
+        <div class="day-date">${day.date}</div>
+        <div class="day-zone">${day.zones}</div>
+        <div class="day-progress">${done}/${items.length} 完成</div>
+      </div>
+    </div>
+    <div class="edit-bar">
+      <button class="edit-toggle-btn${em?' active':''}" onclick="toggleEditMode()">
+        ${em ? '✅ 完成排序' : '✏️ 編輯排序'}
+      </button>
+      ${em ? '<span class="edit-hint">拖曳 ☰ 調整順序</span>' : ''}
+    </div>
+    ${items.length === 0 ? '<div class="empty-state">還沒有行程，點下方新增！</div>' : ''}
+    <ul class="item-list" id="sortableList">
+      ${items.map(item => renderItemCard(item, day.id, em)).join('')}
+    </ul>
+    <button class="add-btn" onclick="openModal('${day.id}')">＋ 新增行程項目</button>
+  `;
+
+  if (em) initDragDrop(day.id);
+}
+
+function renderItemCard(item, dayId, editMode) {
+  const cfg    = CAT_CONFIG[item.cat] || CAT_CONFIG.note;
+  const emCls  = editMode ? ' edit-mode' : '';
+  const safeId = item.id.replace(/'/g, "\\'");
+  return `
+    <li class="item-card${item.done?' done':''}${emCls}" data-id="${item.id}" style="--bar-color:${cfg.color}"
+        onclick="${editMode ? '' : `toggleItem('${dayId}','${safeId}')` }">
+      <div class="drag-handle" onclick="event.stopPropagation()">☰</div>
+      <div class="check-circle"
+           onclick="event.stopPropagation();${editMode ? '' : `toggleItem('${dayId}','${safeId}')`}"
+           style="${editMode ? 'opacity:0.3;pointer-events:none;' : ''}">
+        ${item.done ? '✓' : ''}
+      </div>
+      <div class="item-body">
+        <div class="item-top">
+          <span class="item-name">${cfg.icon} ${escHtml(item.name)}</span>
+          <span class="tag ${cfg.cls}">${cfg.label}</span>
+        </div>
+        <div class="item-meta">
+          ${item.zone    ? `<span>📍 ${escHtml(item.zone)}</span>`    : ''}
+          ${item.station ? `<span>🚉 ${escHtml(item.station)}</span>` : ''}
+          ${item.hours   ? `<span>🕐 ${escHtml(item.hours)}</span>`   : ''}
+        </div>
+        ${item.note ? `<div class="item-note">${escHtml(item.note)}</div>` : ''}
+      </div>
+      <button class="delete-btn" onclick="event.stopPropagation();deleteItem('${dayId}','${safeId}')"
+              style="${editMode ? '' : 'display:none'}">🗑️</button>
+    </li>`;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  ITINERARY — DRAG & DROP
+// ═══════════════════════════════════════════════════════════════════════════════
+
+let _itinCleanup = null;
+
+function initDragDrop(dayId) {
+  if (_itinCleanup) _itinCleanup();
+
+  const list = document.getElementById('sortableList');
+  if (!list) return;
+
+  let dragEl = null, lastY = 0, placeholder = null;
+  const getCards = () => [...list.querySelectorAll('.item-card')];
+
+  function startDrag(e, el) {
+    dragEl = el;
+    lastY  = (e.touches ? e.touches[0] : e).clientY;
+    el.classList.add('dragging');
+    placeholder = document.createElement('li');
+    placeholder.className  = 'drag-placeholder';
+    placeholder.style.height = el.offsetHeight + 'px';
+    list.insertBefore(placeholder, el.nextSibling);
+    e.preventDefault();
+  }
+
+  function moveDrag(e) {
+    if (!dragEl) return;
+    const y  = (e.touches ? e.touches[0] : e).clientY;
+    const dy = y - lastY; lastY = y;
+    const rc = dragEl.getBoundingClientRect();
+    dragEl.style.cssText = `position:fixed;width:${dragEl.offsetWidth}px;left:${rc.left}px;top:${rc.top+dy}px;z-index:999;margin:0;pointer-events:none;opacity:0.85;`;
+    for (const c of getCards().filter(c => c !== dragEl)) {
+      const r = c.getBoundingClientRect();
+      if (y > r.top && y < r.bottom) {
+        list.insertBefore(placeholder, y < r.top + r.height/2 ? c : c.nextSibling);
+        break;
+      }
+    }
+    e.preventDefault();
+  }
+
+  async function endDrag() {
+    if (!dragEl) return;
+    dragEl.style.cssText = '';
+    dragEl.classList.remove('dragging');
+    list.insertBefore(dragEl, placeholder);
+    placeholder.remove();
+
+    const newOrder = getCards().map(c => c.dataset.id);
+    const map = {};
+    (state.items[dayId] || []).forEach(i => { map[i.id] = i; });
+    state.items[dayId] = newOrder.map(id => map[id]).filter(Boolean);
+
+    const reorderData = newOrder.map((id, idx) => ({ id, order: idx + 1 }));
+    state.items[dayId].forEach((item, idx) => { item.order = idx + 1; });
+
+    dragEl = null; placeholder = null;
+    try { await api('/api/reorder', { method:'PATCH', body: JSON.stringify(reorderData) }); }
+    catch (e) { console.error('Reorder failed:', e.message); }
+  }
+
+  list.querySelectorAll('.drag-handle').forEach(handle => {
+    const card = handle.closest('.item-card');
+    handle.addEventListener('touchstart', e => startDrag(e, card), { passive: false });
+    handle.addEventListener('mousedown',  e => startDrag(e, card));
+  });
+
+  const onMove = e => moveDrag(e);
+  const onEnd  = ()  => endDrag();
+  document.addEventListener('touchmove', onMove, { passive: false });
+  document.addEventListener('touchend',  onEnd);
+  document.addEventListener('mousemove', onMove);
+  document.addEventListener('mouseup',   onEnd);
+
+  _itinCleanup = () => {
+    document.removeEventListener('touchmove', onMove);
+    document.removeEventListener('touchend',  onEnd);
+    document.removeEventListener('mousemove', onMove);
+    document.removeEventListener('mouseup',   onEnd);
+  };
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  ITINERARY — ACTIONS
+// ═══════════════════════════════════════════════════════════════════════════════
+
+function toggleEditMode() {
+  state.editMode = !state.editMode;
+  if (_itinCleanup) { _itinCleanup(); _itinCleanup = null; }
+  renderDayContent();
+}
+
+function selectDay(id) {
+  state.currentDay = id;
+  state.editMode   = false;
+  if (_itinCleanup) { _itinCleanup(); _itinCleanup = null; }
+  renderDayTabs();
+  if (state.items[id]) renderDayContent();
+  else loadDay(id);
+}
+
+async function toggleItem(dayId, itemId) {
+  if (state.editMode) return;
+  const item = (state.items[dayId] || []).find(i => i.id === itemId);
+  if (!item) return;
+  item.done = !item.done;
+  renderDayContent();                                         // optimistic
+  try {
+    await api(`/api/item/${itemId}`, { method:'PATCH', body: JSON.stringify({ done: item.done }) });
+  } catch (e) {
+    item.done = !item.done; renderDayContent();              // revert
+    alert('更新失敗，請重試');
+  }
+}
+
+async function deleteItem(dayId, itemId) {
+  if (!confirm('刪除這個項目？')) return;
+  try {
+    await api(`/api/item/${itemId}`, { method:'DELETE' });
+    state.items[dayId] = (state.items[dayId] || []).filter(i => i.id !== itemId);
+    renderDayContent();
+  } catch (e) { alert('刪除失敗：' + e.message); }
+}
+
+// ── 行程 Modal ──
+let modalDayId = null;
+function openModal(dayId) {
+  modalDayId = dayId;
+  ['newName','newNote','newHours','newStation'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('addModal').classList.add('open');
+  setTimeout(() => document.getElementById('newName').focus(), 300);
+}
+function closeModal() { document.getElementById('addModal').classList.remove('open'); }
+
+async function saveItem() {
+  const name = document.getElementById('newName').value.trim();
+  if (!name) { alert('請輸入名稱'); return; }
+  const btn = document.getElementById('saveItemBtn');
+  btn.disabled = true; btn.textContent = '新增中...';
+  try {
+    const newItem = await api('/api/itinerary', {
+      method: 'POST',
+      body: JSON.stringify({
+        name,
+        cat:     document.getElementById('newCat').value,
+        zone:    document.getElementById('newZone').value,
+        station: document.getElementById('newStation').value,
+        hours:   document.getElementById('newHours').value,
+        note:    document.getElementById('newNote').value,
+        day:     modalDayId,
+      }),
+    });
+    if (!state.items[modalDayId]) state.items[modalDayId] = [];
+    state.items[modalDayId].push(newItem);
+    closeModal(); renderDayContent();
+  } catch (e) { alert('新增失敗：' + e.message); }
+  finally { btn.disabled = false; btn.textContent = '新增 ✓'; }
+}
+
+document.getElementById('addModal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  SHOPPING — LOAD & RENDER
+// ═══════════════════════════════════════════════════════════════════════════════
+
+async function loadShopping() {
+  document.getElementById('shopContent').innerHTML =
+    '<div class="loading-state">⏳ 載入購物清單...</div>';
+  try {
+    state.shopItems = await api('/api/shopping');
+    renderShop();
+  } catch (e) {
+    document.getElementById('shopContent').innerHTML =
+      `<div class="loading-state">⚠️ 載入失敗：${e.message}<br><br>
+       <button class="add-btn" onclick="loadShopping()">重新載入</button></div>`;
+  }
+}
+
+function renderShop() {
+  const items = state.shopItems || [];
+  const total = items.length;
+  const done  = items.filter(i => i.done).length;
+
+  document.getElementById('shopProgress').textContent = `已完成 ${done} / ${total} 項`;
+  document.getElementById('shopProgressBar').style.width = total > 0 ? (done/total*100)+'%' : '0%';
+
+  const em = state.shopEditMode;
+
+  if (total === 0) {
+    document.getElementById('shopContent').innerHTML =
+      '<div class="empty-state">購物清單是空的，點下方新增！</div>';
+    return;
+  }
+
+  // Group by area
+  const grouped = {};
+  AREA_ORDER.forEach(a => { grouped[a] = []; });
+  items.forEach(item => {
+    if (grouped[item.area]) grouped[item.area].push(item);
+    else { grouped[item.area] = [item]; }
+  });
+
+  document.getElementById('shopContent').innerHTML = AREA_ORDER.map(areaKey => {
+    const areaItems = grouped[areaKey] || [];
+    if (areaItems.length === 0) return '';
+    const meta     = AREA_META[areaKey] || { icon:'🛍️', desc:'', map:'' };
+    const doneCount = areaItems.filter(i => i.done).length;
+    const mapBtn   = meta.map
+      ? `<a href="${meta.map}" target="_blank" style="font-size:13px;color:var(--text);opacity:0.75;text-decoration:none;font-weight:700;">🗺️ 地圖</a>`
+      : '';
+    const listId = 'shopList-' + areaKey.replace(/[^a-zA-Z0-9]/g, '_');
+    return `
+      <div class="shop-area-header">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <div>
+            <div class="area-name">${meta.icon} ${escHtml(areaKey)}</div>
+            <div class="area-desc">${escHtml(meta.desc)}</div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+            <span class="shop-count">${doneCount}/${areaItems.length}</span>${mapBtn}
+          </div>
+        </div>
+      </div>
+      <ul class="item-list shop-list" id="${listId}">
+        ${areaItems.map(item => renderShopItem(item, em)).join('')}
+      </ul>
+      <div style="margin-bottom:20px"></div>
+    `;
+  }).join('');
+
+  if (em) {
+    AREA_ORDER.forEach(areaKey => {
+      const areaItems = grouped[areaKey] || [];
+      if (areaItems.length === 0) return;
+      const listId = 'shopList-' + areaKey.replace(/[^a-zA-Z0-9]/g, '_');
+      const listEl = document.getElementById(listId);
+      if (listEl) initShopDragDrop(listEl, areaKey);
+    });
+  }
+}
+
+function renderShopItem(item, editMode) {
+  const em     = editMode ? ' edit-mode' : '';
+  const safeId = item.id.replace(/'/g, "\\'");
+  return `
+    <li class="shop-item${item.done?' done':''}${em}" data-id="${item.id}"
+        onclick="${editMode ? '' : `toggleShop('${safeId}')`}">
+      <div class="drag-handle" onclick="event.stopPropagation()">☰</div>
+      <div class="shop-check"
+           onclick="event.stopPropagation();${editMode ? '' : `toggleShop('${safeId}')`}"
+           style="${editMode ? 'opacity:0.3;pointer-events:none;' : ''}">
+        ${item.done ? '✓' : ''}
+      </div>
+      <div class="shop-body">
+        <div class="shop-name">${escHtml(item.name)}</div>
+        ${item.sub ? `<div class="shop-sub">${escHtml(item.sub)}</div>` : ''}
+      </div>
+      <button class="delete-btn" onclick="event.stopPropagation();deleteShopItem('${safeId}')"
+              style="${editMode ? '' : 'display:none'}">🗑️</button>
+    </li>`;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  SHOPPING — DRAG & DROP
+// ═══════════════════════════════════════════════════════════════════════════════
+
+const _shopCleanups = [];
+
+function initShopDragDrop(listEl, areaKey) {
+  let dragEl = null, lastY = 0, placeholder = null;
+  const getCards = () => [...listEl.querySelectorAll('.shop-item')];
+
+  function startDrag(e, el) {
+    dragEl = el;
+    lastY  = (e.touches ? e.touches[0] : e).clientY;
+    el.classList.add('dragging');
+    placeholder = document.createElement('li');
+    placeholder.className  = 'drag-placeholder';
+    placeholder.style.height = el.offsetHeight + 'px';
+    listEl.insertBefore(placeholder, el.nextSibling);
+    e.preventDefault(); e.stopPropagation();
+  }
+
+  function moveDrag(e) {
+    if (!dragEl) return;
+    const y  = (e.touches ? e.touches[0] : e).clientY;
+    const dy = y - lastY; lastY = y;
+    const rc = dragEl.getBoundingClientRect();
+    dragEl.style.cssText = `position:fixed;width:${dragEl.offsetWidth}px;left:${rc.left}px;top:${rc.top+dy}px;z-index:999;margin:0;pointer-events:none;opacity:0.85;`;
+    for (const c of getCards().filter(c => c !== dragEl)) {
+      const r = c.getBoundingClientRect();
+      if (y > r.top && y < r.bottom) {
+        listEl.insertBefore(placeholder, y < r.top + r.height/2 ? c : c.nextSibling);
+        break;
+      }
+    }
+    e.preventDefault();
+  }
+
+  async function endDrag() {
+    if (!dragEl) return;
+    dragEl.style.cssText = '';
+    dragEl.classList.remove('dragging');
+    listEl.insertBefore(dragEl, placeholder);
+    placeholder.remove();
+
+    const newOrder = getCards().map(c => c.dataset.id);
+    const idMap = {};
+    (state.shopItems || []).forEach(i => { idMap[i.id] = i; });
+
+    // Assign fresh order starting from 1 within this area
+    const reorderData = newOrder.map((id, idx) => ({ id, order: idx + 1 }));
+    newOrder.forEach((id, idx) => { if (idMap[id]) idMap[id].order = idx + 1; });
+
+    dragEl = null; placeholder = null;
+    try { await api('/api/reorder', { method:'PATCH', body: JSON.stringify(reorderData) }); }
+    catch (e) { console.error('Shop reorder failed:', e.message); }
+  }
+
+  listEl.querySelectorAll('.drag-handle').forEach(handle => {
+    const card = handle.closest('.shop-item');
+    handle.addEventListener('touchstart', e => startDrag(e, card), { passive: false });
+    handle.addEventListener('mousedown',  e => startDrag(e, card));
+  });
+
+  const onMove = e => moveDrag(e);
+  const onEnd  = ()  => endDrag();
+  document.addEventListener('touchmove', onMove, { passive: false });
+  document.addEventListener('touchend',  onEnd);
+  document.addEventListener('mousemove', onMove);
+  document.addEventListener('mouseup',   onEnd);
+
+  _shopCleanups.push(() => {
+    document.removeEventListener('touchmove', onMove);
+    document.removeEventListener('touchend',  onEnd);
+    document.removeEventListener('mousemove', onMove);
+    document.removeEventListener('mouseup',   onEnd);
+  });
+}
+
+function cleanupShopDrag() {
+  _shopCleanups.forEach(fn => fn());
+  _shopCleanups.length = 0;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  SHOPPING — ACTIONS
+// ═══════════════════════════════════════════════════════════════════════════════
+
+function toggleShopEditMode() {
+  cleanupShopDrag();
+  state.shopEditMode = !state.shopEditMode;
+  const btn  = document.getElementById('shopEditBtn');
+  const hint = document.getElementById('shopEditHint');
+  if (btn)  { btn.textContent = state.shopEditMode ? '✅ 完成排序' : '✏️ 編輯排序'; btn.classList.toggle('active', state.shopEditMode); }
+  if (hint) hint.style.display = state.shopEditMode ? '' : 'none';
+  renderShop();
+}
+
+async function toggleShop(itemId) {
+  if (state.shopEditMode) return;
+  const item = (state.shopItems || []).find(i => i.id === itemId);
+  if (!item) return;
+  item.done = !item.done;
+  renderShop();                                               // optimistic
+  try {
+    await api(`/api/item/${itemId}`, { method:'PATCH', body: JSON.stringify({ done: item.done }) });
+  } catch (e) {
+    item.done = !item.done; renderShop();                    // revert
+    alert('更新失敗，請重試');
+  }
+}
+
+async function deleteShopItem(itemId) {
+  if (!confirm('刪除這個項目？')) return;
+  try {
+    await api(`/api/item/${itemId}`, { method:'DELETE' });
+    state.shopItems = (state.shopItems || []).filter(i => i.id !== itemId);
+    renderShop();
+  } catch (e) { alert('刪除失敗：' + e.message); }
+}
+
+// ── 購物 Modal ──
+function openShopModal() {
+  document.getElementById('shopNewName').value = '';
+  document.getElementById('shopNewSub').value  = '';
+  document.getElementById('addShopModal').classList.add('open');
+  setTimeout(() => document.getElementById('shopNewName').focus(), 300);
+}
+function closeShopModal() { document.getElementById('addShopModal').classList.remove('open'); }
+
+async function saveShopItem() {
+  const name = document.getElementById('shopNewName').value.trim();
+  if (!name) { alert('請輸入名稱'); return; }
+  const area = document.getElementById('shopNewArea').value;
+  const sub  = document.getElementById('shopNewSub').value.trim();
+  const btn  = document.getElementById('saveShopBtn');
+  btn.disabled = true; btn.textContent = '新增中...';
+  try {
+    const newItem = await api('/api/shopping', {
+      method: 'POST',
+      body: JSON.stringify({ name, area, sub }),
+    });
+    if (!state.shopItems) state.shopItems = [];
+    state.shopItems.push(newItem);
+    closeShopModal(); renderShop();
+  } catch (e) { alert('新增失敗：' + e.message); }
+  finally { btn.disabled = false; btn.textContent = '新增 ✓'; }
+}
+
+document.getElementById('addShopModal').addEventListener('click', function(e) {
+  if (e.target === this) closeShopModal();
+});
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  PAGE SWITCH
+// ═══════════════════════════════════════════════════════════════════════════════
+
+function switchPage(name, btn) {
+  state.editMode = false;
+  if (_itinCleanup) { _itinCleanup(); _itinCleanup = null; }
+  cleanupShopDrag();
+
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  btn.classList.add('active');
+
+  if (name === 'shop') {
+    if (state.shopItems === null) loadShopping();
+    else renderShop();
+  }
+  if (name === 'itinerary') {
+    renderDayTabs();
+    if (state.items[state.currentDay]) renderDayContent();
+    else loadDay(state.currentDay);
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  UTILS
+// ═══════════════════════════════════════════════════════════════════════════════
+
+function escHtml(str) {
+  return String(str)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════════════════════════════════════
+
+renderDayTabs();
+loadDay('D1');
+</script>
+</body>
+</html>
